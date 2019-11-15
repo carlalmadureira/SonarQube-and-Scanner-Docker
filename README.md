@@ -16,7 +16,7 @@ To run the SonarQube Server, use the following command:
 
 Once the container is running, check on port 9000 if you can see this: 
 
-![sonarqube](https://imgur.com/eo8ewk0)
+[sonarqube](https://i.imgur.com/eo8ewk0.png)
 
 Log in with your user and password and start adding the plugins necessary to scan your project. To do so, head to the 'administration' tab and click on 'marketplace'. 
 After adding plugins, the server needs to be restarted in order to install, you only need to click on the 'restart server' button that pops up, no additional action required. 
@@ -24,7 +24,7 @@ After adding plugins, the server needs to be restarted in order to install, you 
 Here we are using the latest official Sonar Qube image, but in case you need a particular version of SonarQube - let's say, 5.1,  you just need to alter the 'image' line on docker-compose.yml:
 
     sonar:
-    image: sonarqube:5.1
+     image: sonarqube:5.1
 
 ## Running Sonar Scanner
 
