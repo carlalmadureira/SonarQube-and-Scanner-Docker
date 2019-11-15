@@ -31,7 +31,7 @@ services:
     - SONAR_PROJECT_NAME:${PROJECT_NAME}
     - USER_LOGIN:${USER}
     - USER_PASSWORD:${PASSWORD}
-    - SONAR_PROJECT_SOURCE:/usr/local/project
+    - SONAR_PROJECT_SOURCE:./project
     - SONAR_PROJECT_VERSION:0.1
 
 networks:
