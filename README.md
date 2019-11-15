@@ -16,7 +16,7 @@ To run the SonarQube Server, use the following command:
 
 Once the container is running, check on port 9000 if you can see this: 
 
-[sonarqube](https://i.imgur.com/eo8ewk0.png)
+![sonarqube](https://i.imgur.com/eo8ewk0.png)
 
 Log in with your user and password and start adding the plugins necessary to scan your project. To do so, head to the 'administration' tab and click on 'marketplace'. 
 After adding plugins, the server needs to be restarted in order to install, you only need to click on the 'restart server' button that pops up, no additional action required. 
