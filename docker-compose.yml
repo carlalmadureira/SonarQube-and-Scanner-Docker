@@ -1,0 +1,39 @@
+version: '3.1'
+services:
+  sonar:
+    image: sonarqube
+    ports:
+      - "9000:9000"
+    container_name: sonarqube
+    networks:
+      - sonarnet
+    volumes:
+      - ./sonarqube/sonarqube_conf:/opt/sonarqube/conf
+      - ./sonarqube/sonarqube_data:/opt/sonarqube/data
+      - ./sonarqube/sonarqube_extensions:/opt/sonarqube/extensions
+    
+  sonar-scanner:
+   build: ./sonar-scanner/
+   volumes:
+    - ./project:/usr/local/project
+    - ./sonar-scanner:/usr/local
+   networks:
+     - sonarnet
+   links:
+     - sonar
+   command: sh sonar.sh
+   container_name: sonar_scanner
+   env_file:
+    - .env
+   environment:
+    - SONAR_HOST_URL:'http://sonar:9000'
+    - SONAR_PROJECT_KEY:${PROJECT_KEY}
+    - SONAR_PROJECT_NAME:${PROJECT_NAME}
+    - USER_LOGIN:${USER}
+    - USER_PASSWORD:${PASSWORD}
+    - SONAR_PROJECT_SOURCE:/usr/local/project
+    - SONAR_PROJECT_VERSION:0.1
+
+networks:
+  sonarnet:
+    driver: bridge
