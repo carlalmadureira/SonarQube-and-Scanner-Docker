@@ -23,16 +23,14 @@ services:
      - sonar
    command: sh sonar.sh
    container_name: sonar_scanner
-   env_file:
-    - .env
    environment:
-    - SONAR_HOST_URL:'http://sonar:9000'
-    - SONAR_PROJECT_KEY:${PROJECT_KEY}
-    - SONAR_PROJECT_NAME:${PROJECT_NAME}
-    - USER_LOGIN:${USER}
-    - USER_PASSWORD:${PASSWORD}
-    - SONAR_PROJECT_SOURCE:./project
-    - SONAR_PROJECT_VERSION:0.1
+    - SONAR_HOST_URL=http://sonar:9000
+    - SONAR_PROJECT_KEY=project_key
+    - SONAR_PROJECT_NAME=project_name
+    - USER_LOGIN=admin
+    - USER_PASSWORD=admin
+    - SONAR_PROJECT_SOURCE=/usr/local/project
+    - SONAR_PROJECT_VERSION=0.1
 
 networks:
   sonarnet:
