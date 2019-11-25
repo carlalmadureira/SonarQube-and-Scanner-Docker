@@ -2,19 +2,38 @@
 
 This repo was created to be a simple and quick alternative to work with SonarQube and Sonar Scanner on Docker. 
 
+The embedded [H2 database is not suited for production](https://hub.docker.com/_/sonarqube/), so this project runs with the supported PostgreSQL database.  
+
 ## Dependencies
 Before you start, you first will need the following dependencies installed:
 
 -   [Install Docker](http://docs.docker.com/installation/)
 -   [Install Docker Compose](http://docs.docker.com/compose/install/)
 
+Also make sure your docker host configuration follows Elasticsearch production mode [requirements](https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html#docker-cli-run-prod-mode), setting the recommened values with these commands as root (Linux):
+
+    sysctl -w vm.max_map_count=262144
+    sysctl -w fs.file-max=65536
+    ulimit -n 65536
+    ulimit -u 4096
+
+Or Windows: 
+
+    docker-machine ssh
+    sudo sysctl -w vm.max_map_count=262144
+    exit
+
 ## Running SonarQube Server
 
-To run the SonarQube Server, use the following command: 
+Before you run SonarQube Server, please remind to run postgres first: 
+
+    docker-compose up -d postgres
+
+Now you can use the following command: 
 
     docker-compose up sonar
 
-Once the container is running, check on port 9000 if you can see this: 
+Once the sonar container is running, check on port 9000 if you can see this: 
 
 ![sonarqube](https://i.imgur.com/eo8ewk0.png)
 
@@ -59,17 +78,16 @@ Now go back to your docker-compose and insert your username, password, your new 
 
     docker-compose up sonar-scanner
 
-
-
 ## References
 
--   [http://www.sonarqube.org/](http://www.sonarqube.org/)
+- [http://www.sonarqube.org/](http://www.sonarqube.org/)
+- [https://hub.docker.com/_/sonarqube/](https://hub.docker.com/_/sonarqube/)
 
 ## License
 
 MIT License
 
-Copyright (c) 2019 
+Copyright (c) 2019 carlalmadureira
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

@@ -1,17 +1,49 @@
 version: '3.1'
 services:
-  sonar:
-    image: sonarqube
+  postgres:
+    image: postgres
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
     ports:
-      - "9000:9000"
-    container_name: sonarqube
+      - "5432:5432"
+    volumes:
+      - ./db:/var/lib/postgresql
+      # - ./db:/var/lib/postgresql/data
     networks:
       - sonarnet
+    container_name: postgres
+
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin
+      - PGADMIN_DEFAULT_PASSWORD=admin!
+    ports:
+      - "15432:80"
+    depends_on:
+      - postgres
+    networks:
+      - sonarnet
+  
+  sonar:
+    image: sonarqube:latest
+    ports:
+      - "9000:9000"
+    networks:
+      - sonarnet
+    links: 
+      - postgres
     volumes:
-      - ./sonarqube/sonarqube_conf:/opt/sonarqube/conf
-      - ./sonarqube/sonarqube_data:/opt/sonarqube/data
-      - ./sonarqube/sonarqube_extensions:/opt/sonarqube/extensions
-    
+      - ./sonarqube/conf:/opt/sonarqube/conf
+      - ./sonarqube/data:/opt/sonarqube/data
+      - ./sonarqube/extensions:/opt/sonarqube/extensions
+      - ./sonarqube/logs:/opt/sonarqube/logs
+    environment:
+      - sonar.jdbc.url=jdbc:postgresql://postgres:5432/sonar
+      - sonar.jdbc.username=postgres
+      - sonar.jdbc.password=admin
+
   sonar-scanner:
    build: ./sonar-scanner/
    volumes:
@@ -21,12 +53,10 @@ services:
      - sonarnet
    links:
      - sonar
-   command: sh sonar.sh
-   container_name: sonar_scanner
+   command: sh scan.sh
    environment:
     - SONAR_HOST_URL=http://sonar:9000
-    - SONAR_PROJECT_KEY=project_key
-    - SONAR_PROJECT_NAME=project_name
+    - SONAR_PROJECT_KEY=your_key
     - USER_LOGIN=admin
     - USER_PASSWORD=admin
     - SONAR_PROJECT_SOURCE=/usr/local/project
@@ -35,3 +65,10 @@ services:
 networks:
   sonarnet:
     driver: bridge
+
+volumes:
+  sonarqube_conf:
+  sonarqube_data:
+  sonarqube_extensions:
+  postgresql:
+  postgresql_data:

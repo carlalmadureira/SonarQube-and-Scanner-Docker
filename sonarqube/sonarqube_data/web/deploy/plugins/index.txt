@@ -1,4 +1,0 @@
-python,true,sonar-python-plugin-2.1.0.5269.jar|6a7f4967985a1119a98b6bd58aee758a
-web,true,sonar-html-plugin-3.2.0.2082.jar|298a75a167830bfe6c1a75bf3a08fe19
-authaad,false,sonar-auth-aad-plugin-1.1.jar|ae38a4b094194f9dc9e8f9989a0b2444
-javascript,true,sonar-javascript-plugin-5.2.1.7778.jar|866bb1adbf016ea515620f1aaa15ec53
