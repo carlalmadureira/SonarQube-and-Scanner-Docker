@@ -1,0 +1,16 @@
+2019.11.25 21:32:38 INFO  ce[][o.s.p.ProcessEntryPoint] Starting ce
+2019.11.25 21:32:38 INFO  ce[][o.s.ce.app.CeServer] Compute Engine starting up...
+2019.11.25 21:32:42 INFO  ce[][o.e.p.PluginsService] no modules loaded
+2019.11.25 21:32:42 INFO  ce[][o.e.p.PluginsService] loaded plugin [org.elasticsearch.join.ParentJoinPlugin]
+2019.11.25 21:32:42 INFO  ce[][o.e.p.PluginsService] loaded plugin [org.elasticsearch.percolator.PercolatorPlugin]
+2019.11.25 21:32:42 INFO  ce[][o.e.p.PluginsService] loaded plugin [org.elasticsearch.transport.Netty4Plugin]
+2019.11.25 21:32:54 INFO  ce[][o.s.s.e.EsClientProvider] Connected to local Elasticsearch: [127.0.0.1:9001]
+2019.11.25 21:32:54 INFO  ce[][o.sonar.db.Database] Create JDBC data source for jdbc:postgresql://postgres:5432/sonar
+2019.11.25 21:33:07 INFO  ce[][o.s.s.p.ServerFileSystemImpl] SonarQube home: /opt/sonarqube
+2019.11.25 21:33:08 INFO  ce[][o.s.c.c.CePluginRepository] Load plugins
+2019.11.25 21:33:22 INFO  ce[][o.s.c.c.ComputeEngineContainerImpl] Running Community edition
+2019.11.25 21:33:22 INFO  ce[][o.s.ce.app.CeServer] Compute Engine is operational
+2019.11.25 21:35:31 INFO  ce[][o.s.p.ProcessEntryPoint] Gracefully stopping process
+2019.11.25 21:35:31 INFO  ce[][o.s.ce.app.CeServer] Compute Engine is stopping...
+2019.11.25 21:35:31 INFO  ce[][o.s.c.t.CeProcessingSchedulerImpl] Gracefully stopping workers...
+2019.11.25 21:35:31 INFO  ce[][o.s.ce.app.CeServer] Compute Engine is stopped

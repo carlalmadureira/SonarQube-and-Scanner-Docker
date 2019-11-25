@@ -5,11 +5,12 @@ services:
     environment:
       - POSTGRES_USER=admin
       - POSTGRES_PASSWORD=admin
+      - PGDATA=/var/lib/postgresql/data
     ports:
       - "5432:5432"
     volumes:
-      - ./db:/var/lib/postgresql
-      # - ./db:/var/lib/postgresql/data
+      - ./sonar-db:/var/lib/postgresql
+      - ./sonar-db:/var/lib/postgresql/data
     networks:
       - sonarnet
     container_name: postgres
@@ -41,7 +42,7 @@ services:
       - ./sonarqube/logs:/opt/sonarqube/logs
     environment:
       - sonar.jdbc.url=jdbc:postgresql://postgres:5432/sonar
-      - sonar.jdbc.username=postgres
+      - sonar.jdbc.username=admin
       - sonar.jdbc.password=admin
 
   sonar-scanner:
@@ -65,10 +66,3 @@ services:
 networks:
   sonarnet:
     driver: bridge
-
-volumes:
-  sonarqube_conf:
-  sonarqube_data:
-  sonarqube_extensions:
-  postgresql:
-  postgresql_data:
