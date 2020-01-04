@@ -51,25 +51,18 @@ In this repo example, the 'project' directory would be where your code is. Befor
 
 Head to docker-compose.yml and add the path to the project you wish to scan on SONAR_PROJECT_SOURCE:
 
-    sonar-scanner:
-     build: ./sonar-scanner/
-     volumes:
-      - ./sonar-scanner:/usr/local
-     networks:
-      - sonarnet
-     links:
-      - sonar
-     command: sh sonar.sh
-     container_name: sonar_scanner
-     environment:
-      - SONAR_HOST_URL:'http://sonar:9000'
-      - SONAR_PROJECT_KEY:${PROJECT_KEY}
-      - SONAR_PROJECT_NAME:${PROJECT_NAME}
-      - USER_LOGIN:${USER}
-      - USER_PASSWORD:${PASSWORD}
-      - SONAR_PROJECT_SOURCE: ----PATH TO YOUR PROJECT----
-      - SONAR_PROJECT_VERSION:0.1
-
+     x-sonar-credentials: &sonar-credentials
+        sonar.jdbc.url: jdbc:postgresql://postgres:5432/sonar
+        sonar.jdbc.username: postgres
+        sonar.jdbc.password: admin
+        SONAR_HOST_URL: http://sonar:9000
+        SONAR_PROJECT_KEY: ${PROJECT_KEY}
+        USER_LOGIN: ${USER}
+        USER_PASSWORD: ${PASSWORD}
+        SONAR_PROJECT_SOURCE: path_to_your_project
+        SONAR_PROJECT_VERSION: 0.1
+       
+   
 Access your SonarQube server again and create a new project. 
 Now go back to your docker-compose and insert your username, password, your new project name and project key on 'environment'. 
 
