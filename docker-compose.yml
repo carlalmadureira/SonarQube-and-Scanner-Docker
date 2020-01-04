@@ -1,39 +1,64 @@
-version: '3.1'
+version: "3.7"
+
+x-database-credentials: &database-credentials
+  DB_HOST: "postgres"
+  DB_PORT: "5432"
+  DB_USER: "postgres"
+  DB_PASS: "admin"
+  DB_NAME: "postgres"
+
+x-pgadmin-credentials: &pgadmin-credentials
+  PGADMIN_DEFAULT_EMAIL: "admin"
+  PGADMIN_DEFAULT_PASSWORD: "admin!"
+
+x-sonar-credentials: &sonar-credentials
+  sonar.jdbc.url: jdbc:postgresql://postgres:5432/sonar
+  sonar.jdbc.username: postgres
+  sonar.jdbc.password: admin
+  SONAR_HOST_URL: http://sonar:9000
+  SONAR_PROJECT_KEY: your_key
+  USER_LOGIN: admin
+  USER_PASSWORD: admin
+  SONAR_PROJECT_SOURCE: path_to_your_project
+  SONAR_PROJECT_VERSION: 0.1
+
+
 services:
+
   postgres:
-    image: postgres
-    environment:
-      - POSTGRES_USER=admin
-      - POSTGRES_PASSWORD=admin
-      - PGDATA=/var/lib/postgresql/data
+    image: postgres:11
+    container_name: postgres
     ports:
       - "5432:5432"
     volumes:
-      - ./sonar-db:/var/lib/postgresql
-      - ./sonar-db:/var/lib/postgresql/data
+      - ./banco:/var/lib/postgresql
+      - ./banco:/var/lib/postgresql/data
     networks:
       - sonarnet
-    container_name: postgres
+    environment:
+      <<: *database-credentials
+
 
   pgadmin:
     image: dpage/pgadmin4
-    environment:
-      - PGADMIN_DEFAULT_EMAIL=admin
-      - PGADMIN_DEFAULT_PASSWORD=admin!
     ports:
       - "15432:80"
     depends_on:
       - postgres
     networks:
       - sonarnet
-  
+    environment:
+      <<: *pgadmin-credentials
+
+
   sonar:
     image: sonarqube:latest
+    container_name: sonar
     ports:
       - "9000:9000"
     networks:
       - sonarnet
-    links: 
+    depends_on:  
       - postgres
     volumes:
       - ./sonarqube/conf:/opt/sonarqube/conf
@@ -41,27 +66,25 @@ services:
       - ./sonarqube/extensions:/opt/sonarqube/extensions
       - ./sonarqube/logs:/opt/sonarqube/logs
     environment:
-      - sonar.jdbc.url=jdbc:postgresql://postgres:5432/sonar
-      - sonar.jdbc.username=admin
-      - sonar.jdbc.password=admin
+      <<: *sonar-credentials
+
 
   sonar-scanner:
-   build: ./sonar-scanner/
-   volumes:
-    - ./project:/usr/local/project
-    - ./sonar-scanner:/usr/local
-   networks:
-     - sonarnet
-   links:
-     - sonar
-   command: sh scan.sh
-   environment:
-    - SONAR_HOST_URL=http://sonar:9000
-    - SONAR_PROJECT_KEY=your_key
-    - USER_LOGIN=admin
-    - USER_PASSWORD=admin
-    - SONAR_PROJECT_SOURCE=/usr/local/project
-    - SONAR_PROJECT_VERSION=0.1
+    build: 
+      context: .
+      dockerfile: ./sonar-scanner/Dockerfile
+    command: sh scan.sh
+    container_name: sonar_scanner
+    volumes:
+     - ./bots:/usr/local/projeto
+     - ./sonar-scanner:/usr/local
+    networks:
+      - sonarnet
+    depends_on: 
+      - sonar
+    environment:
+      <<: *sonar-credentials
+
 
 networks:
   sonarnet:
